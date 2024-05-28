@@ -9,8 +9,8 @@ contract Degen is ERC20 {
 
     struct Item {
         address owner;
-        uint256 amount;
-        string name;
+        uint256 price;
+        string title;
     }
 
     mapping(uint => Item) public Items;
@@ -28,11 +28,6 @@ contract Degen is ERC20 {
         _mint(to, amount);
     }
 
-    function burn(uint amount) public {
-        require(balanceOf(msg.sender) >= amount, "Insufficient balance");
-        _burn(msg.sender, amount);
-    }
-
     function transfer(
         address to,
         uint256 amount
@@ -40,12 +35,17 @@ contract Degen is ERC20 {
         success = super.transfer(to, amount);
     }
 
-    function createItem(uint256 amount, string memory _name) public onlyOwner {
+    function burn(uint amount) public {
+        require(balanceOf(msg.sender) >= amount, "Insufficient balance");
+        _burn(msg.sender, amount);
+    }
+
+    function createItem(uint256 price, string memory _title) public onlyOwner {
         id++;
         Item storage item = Items[id];
         item.owner = address(this);
-        item.amount = amount;
-        item.name = _name;
+        item.price = price;
+        item.title = _title;
     }
 
     function redeem(uint id_) public {
@@ -53,7 +53,7 @@ contract Degen is ERC20 {
         Item storage _item = Items[id_];
 
         require(_item.owner == address(this), "item already redeemed");
-        _burn(msg.sender, _item.amount);
+        _burn(msg.sender, _item.price);
         _item.owner = msg.sender;
     }
 

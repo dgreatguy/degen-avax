@@ -1,5 +1,5 @@
 async function main() {
-    const Degen = "0x5c517115c6c41E5dAFcdCB64ad73BC0e1872cE49";
+    const Degen = "0x2F68427a28BBCDFB9EA095Da40543C311c4D9b55";
     const degen = await ethers.getContractAt("Degen", Degen);
   
     const [signer] = await ethers.getSigners();
